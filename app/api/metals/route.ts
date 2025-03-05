@@ -17,30 +17,34 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     await connectToDatabase();
-    const { name } = await req.json();
+    const { name, purity } = await req.json();
 
-    if (!name) {
-      return NextResponse.json({ error: "Metal name is required" }, { status: 400 });
+    if (!name || purity === undefined) {
+      return NextResponse.json({ error: "Metal name and purity are required" }, { status: 400 });
     }
 
-    const newMetal = await Metal.create({ name });
+    const newMetal = await Metal.create({ name, purity });
     return NextResponse.json(newMetal, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to add metal" }, { status: 500 });
   }
 }
 
-// 📌 PATCH: Update a metal (name)
+// 📌 PATCH: Update a metal (name or purity)
 export async function PATCH(req: Request) {
   try {
     await connectToDatabase();
-    const { id, name } = await req.json();
+    const { id, name, purity } = await req.json();
 
-    if (!id || !name) {
+    if (!id || (name === undefined && purity === undefined)) {
       return NextResponse.json({ error: "Invalid data" }, { status: 400 });
     }
 
-    const updatedMetal = await Metal.findByIdAndUpdate(id, { name }, { new: true });
+    const updatedMetal = await Metal.findByIdAndUpdate(
+      id,
+      { ...(name && { name }), ...(purity !== undefined && { purity }) },
+      { new: true }
+    );
 
     if (!updatedMetal) {
       return NextResponse.json({ error: "Metal not found" }, { status: 404 });

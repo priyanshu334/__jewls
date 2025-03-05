@@ -6,13 +6,16 @@ import { Trash2, Plus, Edit } from "lucide-react";
 interface Metal {
   _id: string;
   name: string;
+  purity: number;
 }
 
 export default function MetalsPage() {
   const [metals, setMetals] = useState<Metal[]>([]);
   const [newMetal, setNewMetal] = useState("");
+  const [newPurity, setNewPurity] = useState<number | "">(""); // Handle empty state
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editMetal, setEditMetal] = useState("");
+  const [editPurity, setEditPurity] = useState<number | "">("");
 
   // **Fetch metals from API**
   const fetchMetals = async () => {
@@ -27,13 +30,14 @@ export default function MetalsPage() {
 
   // **Add new metal**
   const addMetal = async () => {
-    if (!newMetal.trim()) return;
+    if (!newMetal.trim() || newPurity === "") return;
     await fetch("/api/metals", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: newMetal.trim() }),
+      body: JSON.stringify({ name: newMetal.trim(), purity: Number(newPurity) }),
     });
     setNewMetal("");
+    setNewPurity("");
     fetchMetals();
   };
 
@@ -49,14 +53,15 @@ export default function MetalsPage() {
 
   // **Update a metal**
   const updateMetal = async () => {
-    if (!editMetal.trim()) return;
+    if (!editMetal.trim() || editPurity === "") return;
     await fetch("/api/metals", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id: editingId, name: editMetal.trim() }),
+      body: JSON.stringify({ id: editingId, name: editMetal.trim(), purity: Number(editPurity) }),
     });
     setEditingId(null);
     setEditMetal("");
+    setEditPurity("");
     fetchMetals();
   };
 
@@ -64,6 +69,8 @@ export default function MetalsPage() {
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
       <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-2xl md:max-w-full ">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Metals</h2>
+
+        {/* Input Fields */}
         <div className="flex mb-6 space-x-2">
           <input
             type="text"
@@ -71,6 +78,13 @@ export default function MetalsPage() {
             className="border border-gray-300 rounded-lg px-4 py-2 flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={newMetal}
             onChange={(e) => setNewMetal(e.target.value)}
+          />
+          <input
+            type="number"
+            placeholder="Purity"
+            className="border border-gray-300 rounded-lg px-4 py-2 w-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={newPurity}
+            onChange={(e) => setNewPurity(e.target.value ? Number(e.target.value) : "")}
           />
           <button
             className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition"
@@ -80,12 +94,14 @@ export default function MetalsPage() {
           </button>
         </div>
 
+        {/* Table */}
         <div className="overflow-hidden rounded-lg border border-gray-200">
           <table className="w-full text-left border-collapse">
             <thead className="bg-gray-100">
               <tr>
                 <th className="p-3 text-gray-600 font-medium">S. No.</th>
                 <th className="p-3 text-gray-600 font-medium">Metal</th>
+                <th className="p-3 text-gray-600 font-medium">Purity</th>
                 <th className="p-3 text-gray-600 font-medium text-center">Actions</th>
               </tr>
             </thead>
@@ -93,6 +109,8 @@ export default function MetalsPage() {
               {metals.map((metal, index) => (
                 <tr key={metal._id} className="border-t hover:bg-gray-50 transition">
                   <td className="p-3 text-gray-800">{index + 1}</td>
+
+                  {/* Name Field */}
                   <td className="p-3 text-gray-800">
                     {editingId === metal._id ? (
                       <input
@@ -105,6 +123,22 @@ export default function MetalsPage() {
                       metal.name
                     )}
                   </td>
+
+                  {/* Purity Field */}
+                  <td className="p-3 text-gray-800">
+                    {editingId === metal._id ? (
+                      <input
+                        type="number"
+                        value={editPurity}
+                        onChange={(e) => setEditPurity(e.target.value ? Number(e.target.value) : "")}
+                        className="border border-gray-300 rounded-lg px-2 py-1 w-20"
+                      />
+                    ) : (
+                      metal.purity
+                    )}
+                  </td>
+
+                  {/* Actions */}
                   <td className="p-3 text-center flex justify-center space-x-3">
                     {editingId === metal._id ? (
                       <button
@@ -119,6 +153,7 @@ export default function MetalsPage() {
                         onClick={() => {
                           setEditingId(metal._id);
                           setEditMetal(metal.name);
+                          setEditPurity(metal.purity);
                         }}
                       >
                         <Edit size={18} />
