@@ -85,10 +85,10 @@ export default function MaterialsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
-      <div className="bg-white shadow-xl rounded-xl p-6 w-full">
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 sm:p-6">
+      <div className="bg-white shadow-xl rounded-xl p-4 sm:p-6 w-full max-w-4xl md:max-w-full">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Materials</h2>
-        <div className="flex mb-6 space-x-2">
+        <div className="flex flex-col sm:flex-row mb-6 gap-2">
           <input
             type="text"
             placeholder="Enter Material Name..."
@@ -99,12 +99,12 @@ export default function MaterialsPage() {
           <input
             type="number"
             placeholder="Enter Price..."
-            className="border border-gray-300 rounded-lg px-4 py-2 w-40 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 rounded-lg px-4 py-2 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={newPrice}
             onChange={(e) => setNewPrice(e.target.value)}
           />
           <select
-            className="border border-gray-300 rounded-lg px-4 py-2 w-40 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 rounded-lg px-4 py-2 sm:w-40 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={newMetal}
             onChange={(e) => setNewMetal(e.target.value)}
           >
@@ -116,14 +116,14 @@ export default function MaterialsPage() {
             ))}
           </select>
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 transition"
             onClick={addMaterial}
           >
             <Plus size={18} /> <span>Add</span>
           </button>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-gray-200">
+        <div className="overflow-x-auto rounded-lg border border-gray-200">
           <table className="w-full text-left border-collapse">
             <thead className="bg-gray-100">
               <tr>

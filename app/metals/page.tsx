@@ -66,12 +66,12 @@ export default function MetalsPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-6">
-      <div className="bg-white shadow-xl rounded-xl p-6 w-full max-w-2xl md:max-w-full ">
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 sm:p-6">
+      <div className="bg-white shadow-xl rounded-xl p-4 sm:p-6 w-full max-w-4xl">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Metals</h2>
 
         {/* Input Fields */}
-        <div className="flex mb-6 space-x-2">
+        <div className="flex flex-col sm:flex-row mb-6 gap-2">
           <input
             type="text"
             placeholder="Enter Metal Name..."
@@ -82,12 +82,12 @@ export default function MetalsPage() {
           <input
             type="number"
             placeholder="Purity"
-            className="border border-gray-300 rounded-lg px-4 py-2 w-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border border-gray-300 rounded-lg px-4 py-2 sm:w-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={newPurity}
             onChange={(e) => setNewPurity(e.target.value ? Number(e.target.value) : "")}
           />
           <button
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-blue-700 transition"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center justify-center space-x-2 hover:bg-blue-700 transition"
             onClick={addMetal}
           >
             <Plus size={18} /> <span>Add</span>
@@ -95,7 +95,7 @@ export default function MetalsPage() {
         </div>
 
         {/* Table */}
-        <div className="overflow-hidden rounded-lg border border-gray-200">
+        <div className="overflow-x-auto rounded-lg border border-gray-200">
           <table className="w-full text-left border-collapse">
             <thead className="bg-gray-100">
               <tr>
