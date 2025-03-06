@@ -67,7 +67,7 @@ export default function MetalsPage() {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 sm:p-6">
-      <div className="bg-white shadow-xl rounded-xl p-4 sm:p-6 w-full max-w-4xl">
+      <div className="bg-white shadow-xl rounded-xl p-4 sm:p-6 w-full max-w-4xl md:max-w-full">
         <h2 className="text-2xl font-semibold mb-4 text-gray-800">Metals</h2>
 
         {/* Input Fields */}
