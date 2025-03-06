@@ -3,8 +3,8 @@ import Image from "next/image";
 export default function Home() {
   return (
   
-  <div className="h-screen ">
-    Browse
+  <div className="h-screen flex justify-center">
+    Navkaar Jewellers
 
   </div>
   );
